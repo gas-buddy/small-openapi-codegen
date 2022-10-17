@@ -46,6 +46,7 @@
     "lodash": "^4.17.21",
     "minimist": "^1.2.7",
     "mkdirp": "^1.0.4",
+    "openapi-types": "^12.0.2",
     "prettier": "^2.7.1",
     "rest-api-support": "^1.16.1"
   },

@@ -1,0 +1,25 @@
+{
+  "name": "{{{options.packageName}}}",
+  "version": "{{#if info.version}}{{{info.version}}}{{else}}1.0.0{{/if}}",
+  "description": "OpenAPI client using fetch for {{{options.serviceName}}}",
+  "keywords": [
+    "fetch",
+    "typescript",
+    "openapi-client",
+    "small-openapi-codegen"
+  ],
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "npx rimraf ./build"
+  },
+  "author": "GasBuddy Developers <developers@gasbuddy.com>",
+  "license": "{{#if options.license}}{{{options.license}}}{{else}}UNLICENSED{{/if}}",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "rest-api-support": "^1.16.0"
+  }
+}

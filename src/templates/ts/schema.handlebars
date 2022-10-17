@@ -1,0 +1,12 @@
+{{#if allOf}}
+export type {{@key}} =
+{{#forEach allOf}}
+{{>type}}{{#unless isLast}} & {{/unless}}
+{{/forEach}}
+{{else}}
+export interface {{@key}} {
+{{#each (properties .)}}
+  {{name}}: {{>type .}};
+{{/each}}
+}
+{{/if}}

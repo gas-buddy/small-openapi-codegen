@@ -1,0 +1,40 @@
+import { parameterBuilder, fetchHelper, eventSourceHelper } from 'rest-api-support';
+import type { FetchConfig, FetchPerRequestOptions, RestApiErrorResponse, RestApiResponse, ValidHTTPResponseCodes } from 'rest-api-support';
+
+const CONFIG_FUNCTION = Symbol.for('small-swagger-codegen::configurationGenerator');
+
+{{#forIn components.schemas}}
+{{> schema}}
+
+{{/forIn}}
+
+type ConfigArg = { [CONFIG_FUNCTION]: FetchConfig } | FetchConfig | ((client: any) => FetchConfig);
+
+function getConfig(configOrGenerator: ConfigArg): FetchConfig {
+  if ((configOrGenerator as any)[CONFIG_FUNCTION]) {
+    return getConfig((configOrGenerator as any)[CONFIG_FUNCTION]);
+  }
+  if (typeof configOrGenerator === 'function') {
+    return configOrGenerator({{{options.className}}});
+  }
+  return configOrGenerator as FetchConfig;
+}
+
+export class {{{options.className}}} {
+  private $$config: FetchConfig;
+
+  constructor(configOrGenerator: ConfigArg) {
+    this.$$config = getConfig(configOrGenerator);
+    this.$$config.baseUrl = this.$$config.baseUrl || '{{baseUrl}}';
+  }
+
+  get baseUrl() {
+    return this.$$config.baseUrl || '';
+  }
+
+{{#each (methods paths)}}
+{{>method .}}
+{{/each}}
+}
+
+export default {{options.className}};

@@ -1,0 +1,52 @@
+  /**
+{{#if summary}}   * {{{summary}}}
+{{/if}}{{#if description}}   * {{{description}}}
+{{/if}}   *
+{{#if parameters}}{{#each parameters}}   * @param {{{name}}} {{{description}}}
+{{/each}}{{/if}}   */
+  {{methodName .}}({{#if parameters}}request: {
+{{#each parameters}}
+  {{js name}}{{#unless required}}?{{/unless}}: {{>type schema}},
+{{/each}}
+{{#if requestBody}}
+  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
+  {{>type (get 'schema' (json requestBody))}},
+{{/if}}
+  }, {{else if requestBody}}
+  request: {
+  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
+  {{>type (get 'schema' (json requestBody))}},
+  },
+  {{/if}}
+$$fetchOptions?: FetchPerRequestOptions,
+  ): Promise<
+{{#forIn responses}}
+  {{#if (json .)}}
+    {{#unless (eq @key 'default')}}
+      RestApiResponse<{{@key}}, {{>type (get 'schema' (json .))}}> |
+    {{/unless}}
+  {{else}}
+    RestApiResponse<{{@key}}, void> |
+  {{/if}}
+{{else}}
+  void
+{{/forIn}}
+{{#if (hasDefault responses)}}
+  RestApiResponse<Exclude<ValidHTTPResponseCodes, {{join (statusCodes responses) ' | '}}>, {{>type (get 'schema' (json responses.default))}}>
+{{else}}
+  RestApiErrorResponse<Exclude<ValidHTTPResponseCodes, {{join (statusCodes responses) ' | '}}>>
+{{/if}}
+  > {
+    const $$source = { method: '{{methodName .}}', client: '{{options.className}}', arguments: request };
+    const $$fetchArgs = parameterBuilder('{{method}}', this.baseUrl, '{{path}}', this.$$config)
+    {{#each parameters}}
+      .{{in}}('{{name}}', request.{{js name}}, {{#if format}}'{{format}}'{{/if}})
+    {{/each}}
+    {{#if requestBody}}
+      .body(
+        '{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}',
+        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}, {{#if format}}'{{format}}'{{/if}})
+    {{/if}}
+      .build();
+    return fetchHelper(this.$$config, $$fetchArgs, $$fetchOptions, $$source) as Promise<any>;
+  }

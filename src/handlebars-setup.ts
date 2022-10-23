@@ -20,24 +20,20 @@ function combine(a1: Record<string, any>[], a2: Record<string, any>[]) {
 
 export function setupHandlebars(options: Record<string, any>) {
   helpers();
-  handlebars.registerHelper('properties', (schema: Record<string, any>) =>
-    getFriendlyProperties(schema),
-  );
+  handlebars.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
 
   // Flatten the paths/methods into an array of path+method+spec
-  handlebars.registerHelper('methods', (paths: Record<string, Record<string, any>>) =>
-    _.flatten(
-      Object.entries(paths).map(([p, methodsAndParams]) => {
-        const { parameters, ...methods } = methodsAndParams;
-        return Object.entries(methods).map(([method, spec]) => ({
-          path: p,
-          method,
-          ...spec,
-          parameters: combine(spec.parameters, parameters),
-        }));
-      }),
-    ),
-  );
+  handlebars.registerHelper('methods', (paths: Record<string, Record<string, any>>) => _.flatten(
+    Object.entries(paths).map(([p, methodsAndParams]) => {
+      const { parameters, ...methods } = methodsAndParams;
+      return Object.entries(methods).map(([method, spec]) => ({
+        path: p,
+        method,
+        ...spec,
+        parameters: combine(spec.parameters, parameters),
+      }));
+    }),
+  ));
 
   // Get the method name for a spec
   handlebars.registerHelper('methodName', (spec: Record<string, any>) => {

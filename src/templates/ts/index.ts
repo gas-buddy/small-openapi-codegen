@@ -42,6 +42,7 @@ const tsModel: LanguageModel = {
       try {
         return prettier.format(input, { ...options, parser: 'typescript' });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
         return input;
       }

@@ -1,7 +1,6 @@
-import helloWorld from '../src';
+import { readSpec } from '../src';
 
 test('Basic function', () => {
-  expect(helloWorld).toBeTruthy(); // Should export something
-  expect(typeof helloWorld).toBe('function'); // Should export a function.
-  helloWorld('');
+  expect(readSpec).toBeTruthy(); // Should export something
+  expect(typeof readSpec).toBe('function'); // Should export a function.
 });

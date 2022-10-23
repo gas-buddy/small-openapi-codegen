@@ -48,5 +48,6 @@ $$fetchOptions?: FetchPerRequestOptions,
         request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}, {{#if format}}'{{format}}'{{/if}})
     {{/if}}
       .build();
+    // This nasty cast is here to support backwards compatibility
     return fetchHelper(this.$$config, $$fetchArgs, $$fetchOptions, $$source) as Promise<any>;
   }

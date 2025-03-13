@@ -18,7 +18,7 @@ function combine(a1: Record<string, any>[], a2: Record<string, any>[]) {
   return [...(a1 || []), ...(a2 || [])];
 }
 
-export function setupHandlebars(options: Record<string, any>) {
+export default function setupHandlebars(options: Record<string, any>) {
   helpers();
   handlebars.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
 

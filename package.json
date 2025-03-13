@@ -11,6 +11,7 @@
     "clean": "yarn dlx rimraf ./build",
     "prepare": "husky install"
   },
+  "bin": "build/bin/small-openapi-codegen.js",
   "author": "GasBuddy Developers <developers@gasbuddy.com>",
   "license": "MIT",
   "repository": {
@@ -47,7 +48,7 @@
     "minimist": "^1.2.7",
     "mkdirp": "^1.0.4",
     "openapi-types": "^12.0.2",
-    "prettier": "^2.7.1",
+    "prettier": "^3.3.3",
     "rest-api-support": "^1.16.1"
   },
   "packageManager": "yarn@3.2.4"

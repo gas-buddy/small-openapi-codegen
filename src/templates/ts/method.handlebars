@@ -9,12 +9,12 @@
   {{js name}}{{#unless required}}?{{/unless}}: {{>type schema}},
 {{/each}}
 {{#if requestBody}}
-  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
+  {{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}:
   {{>type (get 'schema' (json requestBody))}},
 {{/if}}
   }, {{else if requestBody}}
   request: {
-  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
+  {{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}:
   {{>type (get 'schema' (json requestBody))}},
   },
   {{/if}}
@@ -44,8 +44,8 @@ $$fetchOptions?: FetchPerRequestOptions,
     {{/each}}
     {{#if requestBody}}
       .body(
-        '{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}',
-        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}, {{#if format}}'{{format}}'{{/if}})
+        '{{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}',
+        request.{{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}, {{#if format}}'{{format}}'{{/if}})
     {{/if}}
       .build();
     // This nasty cast is here to support backwards compatibility

@@ -57,6 +57,22 @@ export default function setupHandlebars(options: Record<string, any>) {
     (spec: Record<string, Record<string, any>>) => spec?.content?.['application/json'],
   );
 
+  handlebars.registerHelper(
+    'isMultipartFormData',
+    (spec: Record<string, Record<string, any>>) => !!spec?.content?.['multipart/form-data'],
+  );
+
+  handlebars.registerHelper(
+    'getMultipartFormDataProperties',
+    (spec: Record<string, Record<string, any>>) => {
+      const multipartSchema = spec?.content?.['multipart/form-data']?.schema;
+      if (multipartSchema?.type === 'object' && multipartSchema.properties) {
+        return getFriendlyProperties(multipartSchema);
+      }
+      return [];
+    },
+  );
+
   handlebars.registerHelper('statusCodes', (obj: Record<string, any>) => Object.keys(obj).filter((k) => k !== 'default'));
 
   handlebars.registerHelper('hasDefault', (obj: Record<string, any>) => !!obj.default);

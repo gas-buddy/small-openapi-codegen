@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint src",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && yarn copy-templates",
+    "copy-templates": "copyfiles -u 1 \"src/**/*.handlebars\" build",
     "clean": "yarn dlx rimraf ./build",
     "prepare": "husky install"
   },
@@ -31,6 +32,7 @@
     "@types/lodash": "^4.14.186",
     "@types/minimist": "^1.2.2",
     "@types/mkdirp": "^1.0.2",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.25.0",
     "eslint-config-gasbuddy": "^7.0.3",
     "husky": "^8.0.1",

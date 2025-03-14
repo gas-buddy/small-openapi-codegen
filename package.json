@@ -10,7 +10,9 @@
     "build": "tsc -p tsconfig.build.json && yarn copy-templates",
     "copy-templates": "copyfiles -u 1 \"src/**/*.handlebars\" build",
     "clean": "yarn dlx rimraf ./build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test-client": "rm -rf test-client && node build/bin/small-openapi-codegen.js __test_api__/sample-serv.yaml --output test-client --name test-client",
+    "build-and-test-client": "yarn build && yarn test-client"
   },
   "bin": "build/bin/small-openapi-codegen.js",
   "author": "GasBuddy Developers <developers@gasbuddy.com>",
@@ -51,7 +53,7 @@
     "mkdirp": "^1.0.4",
     "openapi-types": "^12.0.2",
     "prettier": "^3.3.3",
-    "rest-api-support": "^1.16.1"
+    "rest-api-support": "2.0.0-beta.1"
   },
   "packageManager": "yarn@3.2.4"
 }

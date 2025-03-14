@@ -2,6 +2,7 @@
 .transpiled
 .nyc_output
 .eslintcache
+test-client
 
 # TypeScript incremental compilation cache
 *.tsbuildinfo

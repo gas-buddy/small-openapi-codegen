@@ -9,7 +9,7 @@
   {{js name}}{{#unless required}}?{{/unless}}: {{>type schema}},
 {{/each}}
 {{#if requestBody}}
-  {{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}:
+  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
   {{#if (isMultipartFormData requestBody)}}
     {
     {{#each (getMultipartFormDataProperties requestBody)}}
@@ -22,7 +22,7 @@
 {{/if}}
   }, {{else if requestBody}}
   request: {
-  {{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}:
+  {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
   {{#if (isMultipartFormData requestBody)}}
     {
     {{#each (getMultipartFormDataProperties requestBody)}}
@@ -53,7 +53,7 @@ $$fetchOptions?: FetchPerRequestOptions,
   RestApiErrorResponse<Exclude<ValidHTTPResponseCodes, {{join (statusCodes responses) ' | '}}>>
 {{/if}}
   > {
-    const $$source = { method: '{{methodName .}}', client: '{{options.className}}', arguments: request };
+    const $$source = { method: '{{methodName .}}', client: '{{options.className}}'{{#if parameters}}, arguments: request{{else if requestBody}}, arguments: request{{/if}} };
     const $$fetchArgs = parameterBuilder('{{method}}', this.baseUrl, '{{path}}', this.$$config)
     {{#each parameters}}
       .{{in}}('{{name}}', request.{{js name}}, {{#if format}}'{{format}}'{{/if}})
@@ -67,8 +67,8 @@ $$fetchOptions?: FetchPerRequestOptions,
         {{/each}}
       {{else}}
       .body(
-        '{{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}}',
-        request.{{#if (get x-codegen-request-body-name)}}{{js (get x-codegen-request-body-name)}}{{else}}body{{/if}})
+        '{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}',
+        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}})
       {{/if}}
     {{/if}}
       .build();

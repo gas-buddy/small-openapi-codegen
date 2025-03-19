@@ -10,12 +10,28 @@
 {{/each}}
 {{#if requestBody}}
   {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
-  {{>type (get 'schema' (json requestBody))}},
+  {{#if (isMultipartFormData requestBody)}}
+    {
+    {{#each (getMultipartFormDataProperties requestBody)}}
+      {{js name}}{{#unless required}}?{{/unless}}: {{>type .}};
+    {{/each}}
+    }
+  {{else}}
+    {{>type (get 'schema' (json requestBody))}}
+  {{/if}},
 {{/if}}
   }, {{else if requestBody}}
   request: {
   {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
-  {{>type (get 'schema' (json requestBody))}},
+  {{#if (isMultipartFormData requestBody)}}
+    {
+    {{#each (getMultipartFormDataProperties requestBody)}}
+      {{js name}}{{#unless required}}?{{/unless}}: {{>type .}};
+    {{/each}}
+    }
+  {{else}}
+    {{>type (get 'schema' (json requestBody))}}
+  {{/if}},
   },
   {{/if}}
 $$fetchOptions?: FetchPerRequestOptions,
@@ -37,15 +53,23 @@ $$fetchOptions?: FetchPerRequestOptions,
   RestApiErrorResponse<Exclude<ValidHTTPResponseCodes, {{join (statusCodes responses) ' | '}}>>
 {{/if}}
   > {
-    const $$source = { method: '{{methodName .}}', client: '{{options.className}}', arguments: request };
+    const $$source = { method: '{{methodName .}}', client: '{{options.className}}'{{#if parameters}}, arguments: request{{else if requestBody}}, arguments: request{{/if}} };
     const $$fetchArgs = parameterBuilder('{{method}}', this.baseUrl, '{{path}}', this.$$config)
     {{#each parameters}}
       .{{in}}('{{name}}', request.{{js name}}, {{#if format}}'{{format}}'{{/if}})
     {{/each}}
     {{#if requestBody}}
+      {{#if (isMultipartFormData requestBody)}}
+        {{#each (getMultipartFormDataProperties requestBody)}}
+      .formData(
+        '{{name}}',
+        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}})
+        {{/each}}
+      {{else}}
       .body(
         '{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}',
-        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}, {{#if format}}'{{format}}'{{/if}})
+        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}})
+      {{/if}}
     {{/if}}
       .build();
     // This nasty cast is here to support backwards compatibility

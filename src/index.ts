@@ -4,7 +4,7 @@ import path from 'path';
 import handlebars from 'handlebars';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { ApiSpec, GenerationOptions, LanguageModel } from './types/index';
-import { setupHandlebars } from './handlebars-setup';
+import setupHandlebars from './handlebars-setup';
 
 export async function readSpec(specPath: string, options: GenerationOptions) {
   const bundled = await SwaggerParser.bundle(specPath);

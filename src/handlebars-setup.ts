@@ -18,7 +18,7 @@ function combine(a1: Record<string, any>[], a2: Record<string, any>[]) {
   return [...(a1 || []), ...(a2 || [])];
 }
 
-export function setupHandlebars(options: Record<string, any>) {
+export default function setupHandlebars(options: Record<string, any>) {
   helpers();
   handlebars.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
 
@@ -55,6 +55,22 @@ export function setupHandlebars(options: Record<string, any>) {
   handlebars.registerHelper(
     'json',
     (spec: Record<string, Record<string, any>>) => spec?.content?.['application/json'],
+  );
+
+  handlebars.registerHelper(
+    'isMultipartFormData',
+    (spec: Record<string, Record<string, any>>) => !!spec?.content?.['multipart/form-data'],
+  );
+
+  handlebars.registerHelper(
+    'getMultipartFormDataProperties',
+    (spec: Record<string, Record<string, any>>) => {
+      const multipartSchema = spec?.content?.['multipart/form-data']?.schema;
+      if (multipartSchema?.type === 'object' && multipartSchema.properties) {
+        return getFriendlyProperties(multipartSchema);
+      }
+      return [];
+    },
   );
 
   handlebars.registerHelper('statusCodes', (obj: Record<string, any>) => Object.keys(obj).filter((k) => k !== 'default'));

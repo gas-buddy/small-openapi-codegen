@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import path from 'path';
 import prettier from 'prettier';
 import { LanguageModel } from '../../types/index';
@@ -40,7 +41,7 @@ const tsModel: LanguageModel = {
     if (path.extname(filename) === '.ts') {
       const options = await prettier.resolveConfig(config.prettierConfig || '');
       try {
-        return prettier.format(input, { ...options, parser: 'typescript' });
+        return await prettier.format(input, { ...options, parser: 'typescript' });
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);

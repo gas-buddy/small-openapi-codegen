@@ -9,6 +9,16 @@ Parse an OpenAPI spec and generate fetch-based clients for Javascript environmen
 
 ## Usage
 
+### Command Line Arguments
+
+```bash
+small-openapi-codegen <path-to-spec-file> --output <output-directory> [--language <lang>]
+```
+
+- `<path-to-spec-file>`: Path to the OpenAPI specification file (required)
+- `--output`: Directory where generated client code will be saved (required)
+- `--language/--lang/-l`: Language template to use (default: 'ts')
+
 ### Generate a test client
 
 To generate a test client from a sample OpenAPI spec:

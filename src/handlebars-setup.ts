@@ -7,11 +7,26 @@ function getFriendlyProperties(schema: Record<string, any>) {
     return [];
   }
   const { properties } = schema;
-  return Object.keys(properties).map((name) => ({
-    name,
-    required: schema.required?.includes(name) || false,
-    ...properties[name],
-  }));
+
+  return Object.keys(properties).map((name) => {
+    // Default to optional (false) unless explicitly found in the required array
+    let isRequired = false;
+
+    // Only consider required if schema.required is an array and contains this property name
+    if (Array.isArray(schema.required)) {
+      isRequired = schema.required.includes(name);
+    }
+
+    const prop = {
+      name,
+      ...properties[name],
+    };
+
+    // Set the parent-level required status (true/false)
+    prop.isRequired = isRequired;
+
+    return prop;
+  });
 }
 
 function combine(a1: Record<string, any>[], a2: Record<string, any>[]) {

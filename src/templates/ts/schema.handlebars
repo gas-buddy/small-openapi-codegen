@@ -6,7 +6,7 @@ export type {{@key}} =
 {{else}}
 export interface {{@key}} {
 {{#each (properties .)}}
-  {{name}}: {{>type .}};
+  {{name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
 {{/each}}
 }
 {{/if}}

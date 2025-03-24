@@ -13,7 +13,7 @@
   {{#if (isMultipartFormData requestBody)}}
     {
     {{#each (getMultipartFormDataProperties requestBody)}}
-      {{js name}}{{#unless required}}?{{/unless}}: {{>type .}};
+      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
     {{/each}}
     }
   {{else}}
@@ -26,7 +26,7 @@
   {{#if (isMultipartFormData requestBody)}}
     {
     {{#each (getMultipartFormDataProperties requestBody)}}
-      {{js name}}{{#unless required}}?{{/unless}}: {{>type .}};
+      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
     {{/each}}
     }
   {{else}}

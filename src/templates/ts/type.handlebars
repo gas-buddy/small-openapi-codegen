@@ -7,7 +7,7 @@
     Record<string, any>
   {{/if}}
 {{else if enum}}'{{{join (map enum JSONstringify) "' | '"}}}'{{
-  else if (eq type 'string')}}string{{
+  else if (eq type 'string')}}{{#if (eq format 'binary')}}Buffer | string{{else}}string{{/if}}{{
   else if (eq type 'number')}}number{{
   else if (eq type 'integer')}}number{{
   else if (eq type 'boolean')}}boolean{{

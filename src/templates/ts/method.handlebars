@@ -19,6 +19,15 @@
   {{else}}
     {{>type (get 'schema' (json requestBody))}}
   {{/if}},
+  {{#if (isMultipartFormData requestBody)}}
+  options?: {
+    {{#each (getMultipartFormDataProperties requestBody)}}
+    {{#if isBinary}}
+    {{js name}}?: { filename?: string; contentType?: string };
+    {{/if}}
+    {{/each}}
+  },
+  {{/if}}
 {{/if}}
   }, {{else if requestBody}}
   request: {
@@ -32,6 +41,15 @@
   {{else}}
     {{>type (get 'schema' (json requestBody))}}
   {{/if}},
+  {{#if (isMultipartFormData requestBody)}}
+  options?: {
+    {{#each (getMultipartFormDataProperties requestBody)}}
+    {{#if isBinary}}
+    {{js name}}?: { filename?: string; contentType?: string };
+    {{/if}}
+    {{/each}}
+  },
+  {{/if}}
   },
   {{/if}}
 $$fetchOptions?: FetchPerRequestOptions,
@@ -63,7 +81,7 @@ $$fetchOptions?: FetchPerRequestOptions,
         {{#each (getMultipartFormDataProperties requestBody)}}
       .formData(
         '{{name}}',
-        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}})
+        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}}{{#if isBinary}}, request.options?.{{js name}}{{/if}})
         {{/each}}
       {{else}}
       .body(

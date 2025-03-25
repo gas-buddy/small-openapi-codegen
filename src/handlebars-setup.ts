@@ -17,9 +17,11 @@ function getFriendlyProperties(schema: Record<string, any>) {
       isRequired = schema.required.includes(name);
     }
 
+    const property = properties[name];
     const prop = {
       name,
-      ...properties[name],
+      ...property,
+      isBinary: property.format === 'binary',
     };
 
     // Set the parent-level required status (true/false)

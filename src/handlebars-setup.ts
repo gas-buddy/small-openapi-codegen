@@ -33,22 +33,50 @@ function combine(a1: Record<string, any>[], a2: Record<string, any>[]) {
   return [...(a1 || []), ...(a2 || [])];
 }
 
+function getBasePath(spec: Record<string, any>): string {
+  if (spec?.servers && spec.servers.length > 0) {
+    const serverUrl = spec.servers[0].url;
+    // If the URL is a full URL with protocol, extract just the path
+    if (serverUrl.startsWith('http')) {
+      try {
+        const url = new URL(serverUrl);
+        return url.pathname || '';
+      } catch (e) {
+        return serverUrl;
+      }
+    }
+    // If it's just a path (e.g., "/v1"), return it directly
+    return serverUrl;
+  }
+  return '';
+}
+
 export default function setupHandlebars(options: Record<string, any>) {
   helpers();
   handlebars.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
 
   // Flatten the paths/methods into an array of path+method+spec
-  handlebars.registerHelper('methods', (paths: Record<string, Record<string, any>>) => _.flatten(
-    Object.entries(paths).map(([p, methodsAndParams]) => {
-      const { parameters, ...methods } = methodsAndParams;
-      return Object.entries(methods).map(([method, spec]) => ({
-        path: p,
-        method,
-        ...spec,
-        parameters: combine(spec.parameters, parameters),
-      }));
-    }),
-  ));
+  handlebars.registerHelper('methods', function methodsHelper(this: any, paths: Record<string, Record<string, any>>) {
+    // Get the base path from the Handlebars context (this)
+    const basePath = getBasePath(this);
+
+    return _.flatten(
+      Object.entries(paths).map(([p, methodsAndParams]) => {
+        const { parameters, ...methods } = methodsAndParams;
+        return Object.entries(methods).map(([method, spec]) => {
+          // Combine the basePath with the operation path - avoid double slashes
+          const fullPath = basePath ? `${basePath.replace(/\/$/, '')}${p}` : p;
+
+          return {
+            path: fullPath,
+            method,
+            ...spec,
+            parameters: combine(spec.parameters, parameters),
+          };
+        });
+      }),
+    );
+  });
 
   // Get the method name for a spec
   handlebars.registerHelper('methodName', (spec: Record<string, any>) => {

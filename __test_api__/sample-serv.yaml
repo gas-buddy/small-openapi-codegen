@@ -3,6 +3,8 @@ info:
   title: Sample API
   description: A sample API to test client generation with small-openapi-codegen
   version: 1.0.0
+servers:
+  - url: /v1
 paths:
   /pets:
     get:

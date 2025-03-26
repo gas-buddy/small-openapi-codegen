@@ -518,7 +518,7 @@ __metadata:
     mkdirp: ^1.0.4
     openapi-types: ^12.0.2
     prettier: ^3.3.3
-    rest-api-support: 2.0.0-beta.3
+    rest-api-support: 2.0.0-beta.4
     ts-jest: ^29.0.3
     typescript: ^4.8.4
   bin:
@@ -6872,12 +6872,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rest-api-support@npm:2.0.0-beta.3":
-  version: 2.0.0-beta.3
-  resolution: "rest-api-support@npm:2.0.0-beta.3"
+"rest-api-support@npm:2.0.0-beta.4":
+  version: 2.0.0-beta.4
+  resolution: "rest-api-support@npm:2.0.0-beta.4"
   dependencies:
     query-string: ^7.1.1
-  checksum: 8d63054c66a428a4985df805c9c78da8c6346bbea81c238f556884b68ff1339416f1072bf5aab2cf35ee5d9c9615977e8e1c1d78b4c4defe87c7f81def96b140
+  checksum: 12891166b8078e3ae68c5e2b4d8ee945e581efb1640a3f2ddc6aa47d69a0fe6760204eff008e8d7eb1e8cad41702baaa215307a2926a9118c741c318bc31b7fd
   languageName: node
   linkType: hard
 

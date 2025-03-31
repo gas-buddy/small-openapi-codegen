@@ -518,7 +518,7 @@ __metadata:
     mkdirp: ^1.0.4
     openapi-types: ^12.0.2
     prettier: ^3.3.3
-    rest-api-support: 2.0.0-beta.5
+    rest-api-support: 2.0.0-beta.6
     ts-jest: ^29.0.3
     typescript: ^4.8.4
   bin:
@@ -3626,18 +3626,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.0":
-  version: 4.0.2
-  resolution: "form-data@npm:4.0.2"
-  dependencies:
-    asynckit: ^0.4.0
-    combined-stream: ^1.0.8
-    es-set-tostringtag: ^2.1.0
-    mime-types: ^2.1.12
-  checksum: e887298b22c13c7c9c5a8ba3716f295a479a13ca78bfd855ef11cbce1bcf22bc0ae2062e94808e21d46e5c667664a1a1a8a7f57d7040193c1fefbfb11af58aab
-  languageName: node
-  linkType: hard
-
 "fragment-cache@npm:^0.2.1":
   version: 0.2.1
   resolution: "fragment-cache@npm:0.2.1"
@@ -5833,7 +5821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12, mime-types@npm:^2.1.35":
+"mime-types@npm:^2.1.35":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -6884,13 +6872,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rest-api-support@npm:2.0.0-beta.5":
-  version: 2.0.0-beta.5
-  resolution: "rest-api-support@npm:2.0.0-beta.5"
+"rest-api-support@npm:2.0.0-beta.6":
+  version: 2.0.0-beta.6
+  resolution: "rest-api-support@npm:2.0.0-beta.6"
   dependencies:
-    form-data: ^4.0.0
     query-string: ^7.1.1
-  checksum: 9d6edfc33612fd65597ec250bab9555b12ae9160a027627c8e4a36b4816c97d408eb3447d24145ea3eadb79992c3f56ec6dc98a158a092531042da92503c61b9
+  checksum: 93e25717eca595705a222ed49549df6e622b86e236922765ca0d133ae82cb1447130692a718b2b7d95ab829d0323d7afba5af96040119d33b92eaf582378faa1
   languageName: node
   linkType: hard
 

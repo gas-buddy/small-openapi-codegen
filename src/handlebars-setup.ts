@@ -22,6 +22,9 @@ function getFriendlyProperties(schema: Record<string, any>) {
       name,
       ...property,
       isBinary: property.format === 'binary',
+      isArray: property.type === 'array',
+      items: property.items,
+      isFileArray: property.type === 'array' && property.items?.format === 'binary',
     };
 
     // Set the parent-level required status (true/false)

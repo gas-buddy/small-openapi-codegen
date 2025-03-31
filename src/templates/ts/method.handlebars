@@ -23,7 +23,9 @@
   options?: {
     {{#each (getMultipartFormDataProperties requestBody)}}
     {{#if isBinary}}
-    {{js name}}?: { filename?: string; contentType?: string };
+    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
+    {{else if isFileArray}}
+    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
     {{/if}}
     {{/each}}
   },
@@ -45,7 +47,9 @@
   options?: {
     {{#each (getMultipartFormDataProperties requestBody)}}
     {{#if isBinary}}
-    {{js name}}?: { filename?: string; contentType?: string };
+    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
+    {{else if isFileArray}}
+    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
     {{/if}}
     {{/each}}
   },
@@ -81,7 +85,7 @@ $$fetchOptions?: FetchPerRequestOptions,
         {{#each (getMultipartFormDataProperties requestBody)}}
       .formData(
         '{{name}}',
-        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}}{{#if isBinary}}, request.options?.{{js name}}{{/if}})
+        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}}{{#if isBinary}}, request.options?.{{js name}}{{else if isFileArray}}, request.options?.{{js name}}{{/if}})
         {{/each}}
       {{else}}
       .body(

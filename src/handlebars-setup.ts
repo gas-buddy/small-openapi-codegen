@@ -56,12 +56,15 @@ function getBasePath(spec: Record<string, any>): string {
   return '';
 }
 
-export default function setupHandlebars(options: Record<string, any>) {
-  helpers();
-  handlebars.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
+export default function setupHandlebars(
+  options: Record<string, any>,
+  hbs: typeof handlebars = handlebars,
+) {
+  helpers({ handlebars: hbs });
+  hbs.registerHelper('properties', (schema: Record<string, any>) => getFriendlyProperties(schema));
 
   // Flatten the paths/methods into an array of path+method+spec
-  handlebars.registerHelper('methods', function methodsHelper(this: any, paths: Record<string, Record<string, any>>) {
+  hbs.registerHelper('methods', function methodsHelper(this: any, paths: Record<string, Record<string, any>>) {
     // Get the base path from the Handlebars context (this)
     const basePath = getBasePath(this);
 
@@ -84,7 +87,7 @@ export default function setupHandlebars(options: Record<string, any>) {
   });
 
   // Get the method name for a spec
-  handlebars.registerHelper('methodName', (spec: Record<string, any>) => {
+  hbs.registerHelper('methodName', (spec: Record<string, any>) => {
     const { operationId } = spec;
     if (operationId) {
       return operationId;
@@ -93,29 +96,29 @@ export default function setupHandlebars(options: Record<string, any>) {
     return `${method}_${path.substring(1)}/{id}/bar`.replace(/[{}]/g, '').replace(/\//g, '_');
   });
 
-  handlebars.registerHelper('js', (name: string) => {
+  hbs.registerHelper('js', (name: string) => {
     if (options.snake) {
       return _.snakeCase(name);
     }
     return _.camelCase(name);
   });
 
-  handlebars.registerHelper(
+  hbs.registerHelper(
     'json',
     (spec: Record<string, Record<string, any>>) => spec?.content?.['application/json'],
   );
 
-  handlebars.registerHelper(
+  hbs.registerHelper(
     'isMultipartFormData',
     (spec: Record<string, Record<string, any>>) => !!spec?.content?.['multipart/form-data'],
   );
 
-  handlebars.registerHelper(
+  hbs.registerHelper(
     'isFormUrlEncoded',
     (spec: Record<string, Record<string, any>>) => !!spec?.content?.['application/x-www-form-urlencoded'],
   );
 
-  handlebars.registerHelper(
+  hbs.registerHelper(
     'getMultipartFormDataProperties',
     (spec: Record<string, Record<string, any>>) => {
       const multipartSchema = spec?.content?.['multipart/form-data']?.schema;
@@ -126,7 +129,7 @@ export default function setupHandlebars(options: Record<string, any>) {
     },
   );
 
-  handlebars.registerHelper(
+  hbs.registerHelper(
     'getFormUrlEncodedProperties',
     (spec: Record<string, Record<string, any>>) => {
       const formSchema = spec?.content?.['application/x-www-form-urlencoded']?.schema;
@@ -137,7 +140,7 @@ export default function setupHandlebars(options: Record<string, any>) {
     },
   );
 
-  handlebars.registerHelper('statusCodes', (obj: Record<string, any>) => Object.keys(obj).filter((k) => k !== 'default'));
+  hbs.registerHelper('statusCodes', (obj: Record<string, any>) => Object.keys(obj).filter((k) => k !== 'default'));
 
-  handlebars.registerHelper('hasDefault', (obj: Record<string, any>) => !!obj.default);
+  hbs.registerHelper('hasDefault', (obj: Record<string, any>) => !!obj.default);
 }

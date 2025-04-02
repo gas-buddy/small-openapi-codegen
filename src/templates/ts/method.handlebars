@@ -16,6 +16,12 @@
       {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
     {{/each}}
     }
+  {{else if (isFormUrlEncoded requestBody)}}
+    {
+    {{#each (getFormUrlEncodedProperties requestBody)}}
+      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
+    {{/each}}
+    }
   {{else}}
     {{>type (get 'schema' (json requestBody))}}
   {{/if}},
@@ -37,6 +43,12 @@
   {{#if (isMultipartFormData requestBody)}}
     {
     {{#each (getMultipartFormDataProperties requestBody)}}
+      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
+    {{/each}}
+    }
+  {{else if (isFormUrlEncoded requestBody)}}
+    {
+    {{#each (getFormUrlEncodedProperties requestBody)}}
       {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
     {{/each}}
     }
@@ -87,6 +99,9 @@ $$fetchOptions?: FetchPerRequestOptions,
         '{{name}}',
         request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}}{{#if isBinary}}, request.options?.{{js name}}{{else if isFileArray}}, request.options?.{{js name}}{{/if}})
         {{/each}}
+      {{else if (isFormUrlEncoded requestBody)}}
+      .formUrlEncoded(
+        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}})
       {{else}}
       .body(
         '{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}',

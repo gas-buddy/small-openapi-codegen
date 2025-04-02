@@ -102,6 +102,39 @@ paths:
           description: Pet deleted
         404:
           description: Pet not found
+  /pets/{pet_id}/form:
+    put:
+      summary: Update a pet with form data
+      operationId: updatePetWithForm
+      parameters:
+        - name: pet_id
+          in: path
+          required: true
+          description: The id of the pet to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the pet
+                status:
+                  type: string
+                  description: Status of the pet
+      responses:
+        200:
+          description: Pet updated
+        400:
+          description: Invalid input
+      x-codegen-request-body-name: formData
   /pets/photo:
     post:
       summary: Upload a photo for a pet

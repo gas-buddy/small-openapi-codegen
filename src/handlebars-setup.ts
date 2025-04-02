@@ -111,11 +111,27 @@ export default function setupHandlebars(options: Record<string, any>) {
   );
 
   handlebars.registerHelper(
+    'isFormUrlEncoded',
+    (spec: Record<string, Record<string, any>>) => !!spec?.content?.['application/x-www-form-urlencoded'],
+  );
+
+  handlebars.registerHelper(
     'getMultipartFormDataProperties',
     (spec: Record<string, Record<string, any>>) => {
       const multipartSchema = spec?.content?.['multipart/form-data']?.schema;
       if (multipartSchema?.type === 'object' && multipartSchema.properties) {
         return getFriendlyProperties(multipartSchema);
+      }
+      return [];
+    },
+  );
+
+  handlebars.registerHelper(
+    'getFormUrlEncodedProperties',
+    (spec: Record<string, Record<string, any>>) => {
+      const formSchema = spec?.content?.['application/x-www-form-urlencoded']?.schema;
+      if (formSchema?.type === 'object' && formSchema.properties) {
+        return getFriendlyProperties(formSchema);
       }
       return [];
     },

@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/small-openapi-codegen",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Parse an OpenAPI spec and generate fetch-based clients for Javascript environments (React Native and Node 12+)",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -55,7 +55,7 @@
     "mkdirp": "^1.0.4",
     "openapi-types": "^12.0.2",
     "prettier": "^3.3.3",
-    "rest-api-support": "2.0.0-beta.8"
+    "rest-api-support": "2.0.0-beta.9"
   },
   "engines": {
     "node": ">=18.0.0"

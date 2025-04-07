@@ -67,7 +67,8 @@
   },
   {{/if}}
   },
-  {{/if}}
+  {{else}}
+  hasNoArguments: null | undefined, {{/if}}
 $$fetchOptions?: FetchPerRequestOptions,
   ): Promise<
 {{#forIn responses}}
@@ -87,7 +88,8 @@ $$fetchOptions?: FetchPerRequestOptions,
   RestApiErrorResponse<Exclude<ValidHTTPResponseCodes, {{join (statusCodes responses) ' | '}}>>
 {{/if}}
   > {
-    const $$source = { method: '{{methodName .}}', client: '{{options.className}}'{{#if parameters}}, arguments: request{{else if requestBody}}, arguments: request{{/if}} };
+    // eslint-disable-next-line prefer-rest-params
+    const $$source = { method: '{{methodName .}}', client: '{{options.className}}', arguments: {{#if parameters}}request{{else if requestBody}}request{{else}}arguments[0]{{/if}} };
     const $$fetchArgs = parameterBuilder('{{method}}', this.baseUrl, '{{path}}', this.$$config)
     {{#each parameters}}
       .{{in}}('{{name}}', request.{{js name}}, {{#if format}}'{{format}}'{{/if}})

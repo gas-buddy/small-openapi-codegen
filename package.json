@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/small-openapi-codegen",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Parse an OpenAPI spec and generate fetch-based clients for Javascript environments (React Native and Node 12+)",
   "main": "build/index.js",
   "types": "build/index.d.ts",

@@ -11,60 +11,28 @@
 {{#if requestBody}}
   {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
   {{#if (isMultipartFormData requestBody)}}
-    {
-    {{#each (getMultipartFormDataProperties requestBody)}}
-      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
-    {{/each}}
-    }
+    {{>type (get 'schema' requestBody.content.[multipart/form-data])}}
   {{else if (isFormUrlEncoded requestBody)}}
-    {
-    {{#each (getFormUrlEncodedProperties requestBody)}}
-      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
-    {{/each}}
-    }
+    {{>type (get 'schema' requestBody.content.[application/x-www-form-urlencoded])}}
   {{else}}
     {{>type (get 'schema' (json requestBody))}}
   {{/if}},
   {{#if (isMultipartFormData requestBody)}}
-  options?: {
-    {{#each (getMultipartFormDataProperties requestBody)}}
-    {{#if isBinary}}
-    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
-    {{else if isFileArray}}
-    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
-    {{/if}}
-    {{/each}}
-  },
+  options?: Record<string, { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[]>,
   {{/if}}
 {{/if}}
   }, {{else if requestBody}}
   request: {
   {{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}}:
   {{#if (isMultipartFormData requestBody)}}
-    {
-    {{#each (getMultipartFormDataProperties requestBody)}}
-      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
-    {{/each}}
-    }
+    {{>type (get 'schema' requestBody.content.[multipart/form-data])}}
   {{else if (isFormUrlEncoded requestBody)}}
-    {
-    {{#each (getFormUrlEncodedProperties requestBody)}}
-      {{js name}}{{#unless isRequired}}?{{/unless}}: {{>type .}};
-    {{/each}}
-    }
+    {{>type (get 'schema' requestBody.content.[application/x-www-form-urlencoded])}}
   {{else}}
     {{>type (get 'schema' (json requestBody))}}
   {{/if}},
   {{#if (isMultipartFormData requestBody)}}
-  options?: {
-    {{#each (getMultipartFormDataProperties requestBody)}}
-    {{#if isBinary}}
-    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
-    {{else if isFileArray}}
-    {{js name}}?: { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[];
-    {{/if}}
-    {{/each}}
-  },
+  options?: Record<string, { filename?: string; contentType?: string } | { filename?: string; contentType?: string }[]>,
   {{/if}}
   },
   {{else}}
@@ -96,11 +64,10 @@ $$fetchOptions?: FetchPerRequestOptions,
     {{/each}}
     {{#if requestBody}}
       {{#if (isMultipartFormData requestBody)}}
-        {{#each (getMultipartFormDataProperties requestBody)}}
       .formData(
-        '{{name}}',
-        request.{{#if ../../x-codegen-request-body-name}}{{js ../../x-codegen-request-body-name}}{{else}}body{{/if}}.{{js name}}{{#if isBinary}}, request.options?.{{js name}}{{else if isFileArray}}, request.options?.{{js name}}{{/if}})
-        {{/each}}
+        request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}},
+        request.options
+      )
       {{else if (isFormUrlEncoded requestBody)}}
       .formUrlEncoded(
         request.{{#if (get "x-codegen-request-body-name")}}{{js (get "x-codegen-request-body-name")}}{{else}}body{{/if}})

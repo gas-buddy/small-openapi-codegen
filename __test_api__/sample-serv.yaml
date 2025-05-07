@@ -189,8 +189,111 @@ paths:
         400:
           description: Invalid input
       x-codegen-request-body-name: request
+  /pets/search:
+    post:
+      summary: Search pets
+      operationId: searchPets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - search_terms
+              properties:
+                search_terms:
+                  type: string
+                max_results:
+                  type: integer
+                filters:
+                  type: object
+                  properties:
+                    species:
+                      type: string
+                    min_weight:
+                      type: number
+                    max_weight:
+                      type: number
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+      x-codegen-request-body-name: request
+  /pets/update:
+    put:
+      summary: Update a pet with form data
+      operationId: updatePetWithFormRef
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetFormData'
+      responses:
+        200:
+          description: Pet updated
+        400:
+          description: Invalid input
+      x-codegen-request-body-name: formData
+  /pets/upload:
+    post:
+      summary: Upload a pet photo with document
+      operationId: uploadPetPhotoWithDoc
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetPhotoUpload'
+      responses:
+        200:
+          description: Photo uploaded
+        400:
+          description: Invalid input
+      x-codegen-request-body-name: request
 components:
   schemas:
+    PetFormData:
+      type: object
+      required:
+        - name
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: Name of the pet
+        status:
+          type: string
+          description: Status of the pet
+    PetPhotoUpload:
+      type: object
+      required:
+        - pet_id
+        - photo
+      properties:
+        pet_id:
+          type: integer
+          format: int64
+        photo:
+          type: string
+          format: binary
+        metadata:
+          type: object
+          properties:
+            title:
+              type: string
+            date:
+              type: string
+              format: date
     Address:
       type: object
       description: An address
@@ -207,7 +310,7 @@ components:
         state:
           type: string
           description: State or province
-        zipCode:
+        zip_code:
           type: string
           description: Postal code
     Pet:
@@ -262,7 +365,7 @@ components:
             breed:
               type: string
               description: The breed of the pet
-            birthDate:
+            birth_date:
               type: string
               format: date
             color:

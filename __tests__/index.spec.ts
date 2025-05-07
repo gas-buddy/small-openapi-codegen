@@ -170,6 +170,34 @@ describe('small-openapi-codegen', () => {
       expect(indexOutput!.output).toContain('uploadPetPhotos(');
       expect(indexOutput!.output).toContain('photos: Array<Buffer | string>;');
     });
+
+    test('handles schema references in form-urlencoded requests', async () => {
+      const spec = await readSpec(sampleSpecPath, { snake: true });
+      const outputs = await render(mockTsModel, spec, {});
+
+      const indexOutput = outputs.find(
+        (output) => (typeof output.filename === 'function' ? output.filename() : output.filename) === 'src/index.ts',
+      );
+
+      // Check for formUrlEncoded with reference
+      expect(indexOutput!.output).toContain('updatePetWithFormRef');
+      expect(indexOutput!.output).toContain('export interface PetFormData');
+      expect(indexOutput!.output).toContain('formUrlEncoded');
+    });
+
+    test('handles schema references in multipart/form-data requests', async () => {
+      const spec = await readSpec(sampleSpecPath, { snake: true });
+      const outputs = await render(mockTsModel, spec, {});
+
+      const indexOutput = outputs.find(
+        (output) => (typeof output.filename === 'function' ? output.filename() : output.filename) === 'src/index.ts',
+      );
+
+      // Check for multipart/form-data with reference
+      expect(indexOutput!.output).toContain('uploadPetPhotoWithDoc');
+      expect(indexOutput!.output).toContain('export interface PetPhotoUpload');
+      expect(indexOutput!.output).toContain('formData');
+    });
   });
 
   describe('Response types', () => {

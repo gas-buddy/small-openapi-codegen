@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/small-openapi-codegen",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Parse an OpenAPI spec and generate fetch-based clients for Javascript environments (React Native and Node 12+)",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -11,7 +11,7 @@
     "copy-templates": "copyfiles -u 1 \"src/**/*.handlebars\" build",
     "clean": "yarn dlx rimraf ./build",
     "prepare": "husky install",
-    "test-client": "rm -rf test-client && node build/bin/small-openapi-codegen.js __test_api__/sample-serv.yaml --output test-client --name test-client",
+    "test-client": "rm -rf test-client && node build/bin/small-openapi-codegen.js __test_api__/sample-serv.yaml --output test-client --name test-client --snake",
     "build-and-test-client": "yarn build && yarn test-client"
   },
   "bin": "build/bin/small-openapi-codegen.js",
@@ -55,7 +55,7 @@
     "mkdirp": "^1.0.4",
     "openapi-types": "^12.0.2",
     "prettier": "^3.3.3",
-    "rest-api-support": "2.0.0-beta.9"
+    "rest-api-support": "2.0.0-beta.10"
   },
   "packageManager": "yarn@3.2.4"
 }

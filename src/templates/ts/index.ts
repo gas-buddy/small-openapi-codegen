@@ -28,6 +28,10 @@ const tsModel: LanguageModel = {
       source: path.resolve(__dirname, 'yarn.handlebars'),
       filename: () => 'yarn.lock',
     },
+    {
+      source: path.resolve(__dirname, 'yarnrc.handlebars'),
+      filename: () => '.yarnrc.yml',
+    },
     partial('schema'),
     partial('type'),
     partial('method'),

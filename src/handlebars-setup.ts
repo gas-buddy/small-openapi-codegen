@@ -143,4 +143,6 @@ export default function setupHandlebars(
   hbs.registerHelper('statusCodes', (obj: Record<string, any>) => Object.keys(obj).filter((k) => k !== 'default'));
 
   hbs.registerHelper('hasDefault', (obj: Record<string, any>) => !!obj.default);
+
+  hbs.registerHelper('uppercase', (str: string) => str.toUpperCase());
 }

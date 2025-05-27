@@ -58,7 +58,7 @@ $$fetchOptions?: FetchPerRequestOptions,
   > {
     // eslint-disable-next-line prefer-rest-params
     const $$source = { method: '{{methodName .}}', client: '{{options.className}}', arguments: {{#if parameters}}request{{else if requestBody}}request{{else}}arguments[0]{{/if}} };
-    const $$fetchArgs = parameterBuilder('{{method}}', this.baseUrl, '{{path}}', this.$$config)
+    const $$fetchArgs = parameterBuilder('{{uppercase method}}', this.baseUrl, '{{path}}', this.$$config)
     {{#each parameters}}
       .{{in}}('{{name}}', request.{{js name}}, {{#if format}}'{{format}}'{{/if}})
     {{/each}}
